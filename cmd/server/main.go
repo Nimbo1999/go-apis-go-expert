@@ -8,6 +8,8 @@ import (
 	"github.com/Nimbo1999/go-apis-go-expert/internal/entity"
 	"github.com/Nimbo1999/go-apis-go-expert/internal/infra/database"
 	"github.com/Nimbo1999/go-apis-go-expert/internal/infra/webserver/handlers"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -26,9 +28,12 @@ func main() {
 	productDB := database.NewProduct(db)
 	productHandler := handlers.NewProductHandler(productDB)
 
-	http.HandleFunc("/product", productHandler.Create)
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Post("/product", productHandler.Create)
+	// http.HandleFunc("/product", productHandler.Create)
 
-	err = http.ListenAndServe(fmt.Sprintf(":%s", config.WebServerPort), nil)
+	err = http.ListenAndServe(fmt.Sprintf(":%s", config.WebServerPort), r)
 	if err != nil {
 		panic(err)
 	}
