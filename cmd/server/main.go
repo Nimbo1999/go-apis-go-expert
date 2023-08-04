@@ -30,7 +30,12 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(middleware.SetHeader("Content-Type", "application/json"))
 	r.Post("/product", productHandler.Create)
+	r.Get("/product/{id}", productHandler.GetProduct)
+	r.Get("/product", productHandler.GetProducts)
+	r.Put("/product/{id}", productHandler.UpdateProduct)
+	r.Delete("/product/{id}", productHandler.DeleteProduct)
 	// http.HandleFunc("/product", productHandler.Create)
 
 	err = http.ListenAndServe(fmt.Sprintf(":%s", config.WebServerPort), r)
