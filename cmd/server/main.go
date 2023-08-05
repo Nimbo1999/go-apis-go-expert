@@ -26,7 +26,9 @@ func main() {
 	db.AutoMigrate(&entity.Product{}, &entity.User{})
 
 	productDB := database.NewProduct(db)
+	userDB := database.NewUser(db)
 	productHandler := handlers.NewProductHandler(productDB)
+	userHandler := handlers.NewUserHandler(userDB, config.TokenAuth, config.JWTExpiresIn)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -36,7 +38,9 @@ func main() {
 	r.Get("/product", productHandler.GetProducts)
 	r.Put("/product/{id}", productHandler.UpdateProduct)
 	r.Delete("/product/{id}", productHandler.DeleteProduct)
-	// http.HandleFunc("/product", productHandler.Create)
+
+	r.Post("/user", userHandler.Create)
+	r.Post("/user/login", userHandler.Login)
 
 	err = http.ListenAndServe(fmt.Sprintf(":%s", config.WebServerPort), r)
 	if err != nil {
