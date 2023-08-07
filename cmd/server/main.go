@@ -32,8 +32,10 @@ func main() {
 	userHandler := handlers.NewUserHandler(userDB, config.TokenAuth, config.JWTExpiresIn)
 
 	r := chi.NewRouter()
+	// r.Use(LogRequest)
 	r.Use(middleware.Logger)
 	r.Use(middleware.SetHeader("Content-Type", "application/json"))
+	r.Use(middleware.Recoverer)
 
 	r.Route("/product", func(r chi.Router) {
 		r.Use(jwtauth.Verifier(config.TokenAuth))
@@ -53,3 +55,11 @@ func main() {
 		panic(err)
 	}
 }
+
+// Creating a middleware
+// func LogRequest(next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		fmt.Printf("%s: %s %s%s %s\n", time.Now().Format(time.RFC3339), r.Method, r.Host, r.URL.String(), r.Proto)
+// 		next.ServeHTTP(w, r)
+// 	})
+// }
