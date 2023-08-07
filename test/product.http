@@ -10,12 +10,15 @@ Content-Type: application/json
 }
 
 ### List products
-GET http://localhost:8000/product?page=1&limit=1 HTTP/1.1
+# GET http://localhost:8000/product?page=1&limit=1 HTTP/1.1
+GET http://localhost:8000/product HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hdGhldXNAZ21haWwuY29tIiwiZXhwIjoxNjkxNDA5MTYyLCJpYXQiOjE2OTE0MDg4NjIsIm5hbWUiOiJNYXRoZXVzIExvcGVzIiwic3ViIjoiYzMyZGJlNDktM2I1Yy00MTA3LTg0ZTktMmVmYmZmNDk4ZmU0In0.BbfGUIxishOZLhxtFPlTQbZf_tfYtVme-2NvQGc6-FA
 
 ### Get product by ID
 GET http://localhost:8000/product/4b9da45a-41af-4025-8075-69a9c241a3ec HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hdGhldXNAZ21haWwuY29tIiwiZXhwIjoxNjkxNDA5MTYyLCJpYXQiOjE2OTE0MDg4NjIsIm5hbWUiOiJNYXRoZXVzIExvcGVzIiwic3ViIjoiYzMyZGJlNDktM2I1Yy00MTA3LTg0ZTktMmVmYmZmNDk4ZmU0In0.BbfGUIxishOZLhxtFPlTQbZf_tfYtVme-2NvQGc6-FA
 
 ### Update product
 PUT http://localhost:8000/product/a17c17ec-7c96-407f-a917-37767693baf7 HTTP/1.1
