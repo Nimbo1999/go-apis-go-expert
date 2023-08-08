@@ -5,16 +5,35 @@ import (
 	"net/http"
 
 	"github.com/Nimbo1999/go-apis-go-expert/configs"
+	_ "github.com/Nimbo1999/go-apis-go-expert/docs"
 	"github.com/Nimbo1999/go-apis-go-expert/internal/entity"
 	"github.com/Nimbo1999/go-apis-go-expert/internal/infra/database"
 	"github.com/Nimbo1999/go-apis-go-expert/internal/infra/webserver/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/jwtauth"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
+// @title                       Go Expert API example
+// @version                     1.0
+// @description                 Product API with authentication
+// @termsOfService              http://swagger.io/terms/
+
+// @contact.name                Matheus Lopes
+// @contact.url                 https://github.com/Nimbo1999
+// @contact.email               matlopes1999@gmail.com
+
+// @license.name                MIT
+// @license.url                 todo
+
+// @host                        localhost:8000
+// @BasePath                    /
+// @securityDefinitions.apikey  ApiKeyAuth
+// @in                          header
+// @name                        Authorization
 func main() {
 	config, err := configs.LoadConfig("./")
 	if err != nil {
@@ -50,8 +69,9 @@ func main() {
 	r.Post("/user", userHandler.Create)
 	r.Post("/user/login", userHandler.Login)
 
-	err = http.ListenAndServe(fmt.Sprintf(":%s", config.WebServerPort), r)
-	if err != nil {
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
+
+	if err = http.ListenAndServe(fmt.Sprintf(":%s", config.WebServerPort), r); err != nil {
 		panic(err)
 	}
 }
